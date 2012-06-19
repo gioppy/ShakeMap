@@ -21,13 +21,13 @@ Examples
 Using the plugin is very simple! Call the JSON via AJAX and call the shakeMap function:
 
 jQuery(function(){
-	jQuery.getJSON('out.json', function(data, success){
-		if(success && data.points.length > 0){		
-			jQuery('#map').shakeMap({
-				data:data
-			});
-		}
-	});
+  jQuery.getJSON('out.json', function(data, success){
+    if(success && data.points.length > 0){		
+      jQuery('#map').shakeMap({
+        data:data
+      });
+    }
+  });
 })
 
 The div#map has the simple style of width and heigh!
