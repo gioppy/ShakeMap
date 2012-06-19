@@ -1,0 +1,4 @@
+ShakeMap
+========
+
+ShakeMap jQuery plugin
