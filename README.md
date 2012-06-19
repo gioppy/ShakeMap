@@ -9,18 +9,18 @@ In this fork, I have changed the way the data is selected and manipulated. All t
 
 The plugin requires:
 
-MarkerClucterer - http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/docs/reference.html
+- MarkerClucterer - http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/docs/reference.html
 
 Optional requirement:
 
-Infobox - http://code.google.com/p/gmaps-samples-v3/source/browse/trunk/infowindow_custom/?r=37
+- Infobox - http://code.google.com/p/gmaps-samples-v3/source/browse/trunk/infowindow_custom/?r=37
 
 Examples
 ========
 
 Using the plugin is very simple! Call the JSON via AJAX and call the shakeMap function:
 
-jQuery(function(){
+`jQuery(function(){
   jQuery.getJSON('out.json', function(data, success){
     if(success && data.points.length > 0){		
       jQuery('#map').shakeMap({
@@ -28,14 +28,14 @@ jQuery(function(){
       });
     }
   });
-})
+})`
 
 The div#map has the simple style of width and heigh!
 
 Plugin Options
 ========
 
-data:{}, //the data information of the location
+`data:{}, //the data information of the location
 grid_size:50, //the grid size of the markerclucterer
 max_zoom:15, //the maximun zoom for the markerclucterer
 clusterer_styles:[], //the style of the markerclucterer
@@ -45,4 +45,4 @@ styled:false, //simple check if use or not the styled map
 styled_obj:{}, //styled map object
 infobox:false, //simple checkbox if use or not the infobox
 infobox_settings:{"offset":"", "background":"", "closeBoxMargin":"9px 38px 2px 2px", "closeBoxURL":""}, //infobox setting object
-show_baloon:true, //simple checkbox if show or not the infowindow on click
+show_baloon:true, //simple checkbox if show or not the infowindow on click`
