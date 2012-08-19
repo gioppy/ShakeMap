@@ -45,19 +45,21 @@
 	        }
 	        markerManager = new MarkerClusterer(map, oms.getMarkers(), mcOptions);
             oms.addListener('click', function(marker) {
-	          console.log(marker.url);
+              setMarkerAction(marker);
 	        });
           }else{
             for(var i = 0; i < totalMarker; i++){
 	          marker.push(createMarker(points.points[i]));
+              setMarkerAction(marker[i]);
 	        }
 	        markerManager = new MarkerClusterer(map, marker, mcOptions);
           }
-          markerManager.setMaxZoom(10);
+          //apply style to the cluster
           if(settings.clusterer_styles.length != 0){
             var styles = settings.clusterer_styles;
             markerManager.setStyles(styles);
           }
+          //settings user position if possible
           if(settings.use_geo == true){
             navigator.geolocation.getCurrentPosition(onGeoSuccess, onGeoError);
           }
@@ -163,7 +165,7 @@
         if(totalMarker){
           initialPoint = $.shakeMap.makeGLatLng(points.points[0].point);
         }else{
-          //initialPoint = $.shakeMap.makeGLatLng(setting.default_point);
+          initialPoint = $.shakeMap.makeGLatLng(setting.default_point);
         }
 
         newBounds = new google.maps.LatLngBounds(initialPoint, initialPoint);
@@ -209,18 +211,28 @@
 
         //add information to the marker if its loaded from a JSON
         if(place_elm.point.informazioni){
-          info = place_elm.point.informazioni;
+          marker.desc = place_elm.point.informazioni;
         }
+        return marker;
+      };
 
-        if(totalMarker > 0){
-          switch(settings.marker_action){
-            //normal infowindow function
-            case "infowindow":
-              info_window = new google.maps.InfoWindow({
-                content: $('<div/>').html(info).text()
-                //maxWidth: settings.info_window_max_width
+      var setMarkerAction = function(marker){
+        switch(settings.marker_action){
+          //normal infowindow function
+          case "infowindow":
+            info_window = new google.maps.InfoWindow({
+              content: $('<div/>').html(marker.desc).text()
+              //maxWidth: settings.info_window_max_width
+            });
+            info_windows.push(info_window);
+            if(settings.use_spider == true){
+              $.each(info_windows, function(index, iwindow){
+                if(info_window != iwindow){
+                  iwindow.close();
+                }
               });
-              info_windows.push(info_window);
+              info_window.open(map, marker);
+            }else{
               google.maps.event.addListener(marker, 'click', function(){
                 $.each(info_windows, function(index, iwindow){
                   if(info_window != iwindow){
@@ -229,35 +241,42 @@
                 });
                 info_window.open(map, marker);
               });
-            break;
-
-            //infobox ballon function
-            case "infobox":
-              var offset, regExp, size, infoOptions, infobox;
-              regExp = /^.\[\s*([0-9]*\s*,\s*[0-9]*)\s*\].*$/;
-              size = offset.replace(regExp, '$1').split(',');
-
-              infoOptions = {
-                content:$('<div/>').html(info).text(),
-                disableAutoPan: false,
-                maxWidth: 0,
-                pixelOffset: new google.maps.Size(parseInt(size[0].replace(/ /g, '')), parseInt(size[1].replace(/ /g, ''))),
-                zIndex: null,
-                boxStyle:{
-                  background: "url("+settings.infobox_settings.background+") left top no-repeat",
-                  opacity: 1,
-                  width: "231px",
-                  height:"175px"
-                },
-                closeBoxMargin: settings.infobox_settings.closeBoxMargin,
-                closeBoxURL: settings.infobox_settings.closeBoxURL,
-                infoBoxClearance: new google.maps.Size(1, 1),
-                isHidden: false,
-                pane: "floatPane",
-                enableEventPropagation: false
-              }
-              infobox = new InfoBox(infoOptions);
-              info_windows.push(infobox);
+            }
+          break;
+        
+          //infobox ballon function
+          case "infobox":
+            var offset, size, infoOptions, infobox;
+            offset = settings.infobox_settings.offset;
+            infoOptions = {
+              content: $('<div/>').html(marker.desc).text(),
+              disableAutoPan: false,
+              maxWidth: 0,
+              pixelOffset: new google.maps.Size(offset[0], offset[1]),
+              zIndex: null,
+              boxStyle:{
+                background: "url("+settings.infobox_settings.background+") left top no-repeat",
+                opacity: 1,
+                width:settings.infobox_settings.width,
+                height:settings.infobox_settings.height
+              },
+              closeBoxMargin: settings.infobox_settings.closeBoxMargin,
+              closeBoxURL: settings.infobox_settings.closeBoxURL,
+              infoBoxClearance: new google.maps.Size(1, 1),
+              isHidden: false,
+              pane: "floatPane",
+              enableEventPropagation: false
+            }
+            infobox = new InfoBox(infoOptions);
+            info_windows.push(infobox);
+            if(settings.use_spider == true){
+              $.each(info_windows, function(index, iwindow){
+                if(infobox != iwindow){
+                  iwindow.close();
+                }
+              });
+              infobox.open(map, marker);
+            }else{
               google.maps.event.addListener(marker, 'click', function(){
                 $.each(info_windows, function(index, iwindow){
                   if(infobox != iwindow){
@@ -266,20 +285,21 @@
                 });
                 infobox.open(map, marker);
               });
-            break;
-
-            //direct click, no infowindow
-            case "click":
-              if(settings.use_spider == false){
-                google.maps.event.addListener(marker, 'click', function(){
-                  console.log(this.url);
-                });
-              }
-            break;
-          }
+            }
+          break;
+        
+          //direct click, no infowindow
+          case "click":
+            if(settings.use_spider == true){
+              console.log(marker.url);
+            }else{
+              google.maps.event.addListener(marker, 'click', function(){
+                console.log(this.url);
+              });
+            }
+          break;
         }
-        return marker;
-      };
+      }
 
       var updateMarkerManager = function(){
         if(settings.always_show_markers == true){
@@ -329,7 +349,7 @@
       use_geo:false,
       styled:false,
       styled_obj:{},
-      infobox_settings:{"offset":"", "background":"", "closeBoxMargin":"9px 38px 2px 2px", "closeBoxURL":""},
+      infobox_settings:{"offset":"", "width":"", "height":"", "background":"", "closeBoxMargin":"9px 38px 2px 2px", "closeBoxURL":""},
       marker_action:"infowindow", //infowindow, infobox, click
       resizer: "",
       resizer_height:0,
