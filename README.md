@@ -10,6 +10,7 @@ In this fork, I have changed the way the data is selected and manipulated. All t
 The plugin requires:
 
 - MarkerClucterer - http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/docs/reference.html
+- OverlappingMarkerSpiderfier - https://github.com/jawj/OverlappingMarkerSpiderfier
 
 Optional requirement:
 
@@ -42,7 +43,7 @@ clusterer_styles:[], //the style of the markerclucterer
 default_point:{lat:0.0, lng:0.0}, //default latitude and longitude fallback  
 use_geo:false, //using HTML5 geolocation  
 styled:false, //simple check if use or not the styled map  
-styled_obj:{}, //styled map object  
-infobox:false, //simple checkbox if use or not the infobox  
-infobox_settings:{"offset":"", "background":"", "closeBoxMargin":"9px 38px 2px 2px", "closeBoxURL":""}, //infobox setting object  
-show_baloon:true, //simple checkbox if show or not the infowindow on click  
+styled_obj:{}, //styled map object 
+infobox_settings:{"offset":[0,0], "width":"", "height":"", "background":"", "closeBoxMargin":"9px 38px 2px 2px", "closeBoxURL":""}, //infobox setting object  
+marker_action:"infowindow", //action to the marker: infowindow, infobox, click  
+use_spider:false //add OverlappingMarkerSpiderfier to the marker
