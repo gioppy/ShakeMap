@@ -291,10 +291,10 @@
           //direct click, no infowindow
           case "click":
             if(settings.use_spider == true){
-              console.log(marker.url);
+              settings.onClick(marker);
             }else{
               google.maps.event.addListener(marker, 'click', function(){
-                console.log(this.url);
+                settings.onClick(this);
               });
             }
           break;
@@ -349,11 +349,12 @@
       use_geo:false,
       styled:false,
       styled_obj:{},
-      infobox_settings:{"offset":"", "width":"", "height":"", "background":"", "closeBoxMargin":"9px 38px 2px 2px", "closeBoxURL":""},
+      infobox_settings:{"offset":[0,0], "width":"", "height":"", "background":"", "closeBoxMargin":"9px 38px 2px 2px", "closeBoxURL":""},
       marker_action:"infowindow", //infowindow, infobox, click
       resizer: "",
       resizer_height:0,
-      use_spider:false
+      use_spider:false,
+      onClick:function(marker){},
     },
     makeGLatLng:function(place_point){
       return new google.maps.LatLng(place_point.lat, place_point.lng);
