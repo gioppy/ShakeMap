@@ -20,7 +20,6 @@
       var init = function(doUpdate, data){
         var min_zoom, zoom_level;
         marker = [];
-        spider = [];
 	    info_windows = [];
         if(doUpdate){
           points = data;
@@ -35,6 +34,9 @@
           markerManager.clearMarkers();
           google.maps.event.trigger(map, 'resize');
           map.fitBounds(bounds);
+          if(settings.use_spider == true){
+            oms.clearMarkers();
+          }
         }else{
           //create new map
           map = createMap();
@@ -66,8 +68,22 @@
         }
 
         if(doUpdate){
-          //updateMarkerManager();
-          markerManager = new MarkerClusterer(map, marker, mcOptions);
+          if(settings.use_spider == true){
+            oms = new OverlappingMarkerSpiderfier(map, {markersWontMove: true, markersWontHide: true});
+            for(var i = 0; i < totalMarker; i++){
+	          marker.push(oms.addMarker(createMarker(points.points[i])));
+	        }
+	        markerManager = new MarkerClusterer(map, oms.getMarkers(), mcOptions);
+            oms.addListener('click', function(marker) {
+              setMarkerAction(marker);
+	        });
+          }else{
+            for(var i = 0; i < totalMarker; i++){
+	          marker.push(createMarker(points.points[i]));
+              setMarkerAction(marker[i]);
+	        }
+            markerManager = new MarkerClusterer(map, marker, mcOptions);
+          }
         }else{
           google.maps.event.addListener(markerManager, 'loaded', function(){
             updateMarkerManager();
@@ -161,7 +177,7 @@
       };
 
       var getBounds = function(doUpdate){
-        var newBounds, initialPoint;
+        var newBounds, initialPoint, lenPoints;
         if(totalMarker){
           initialPoint = $.shakeMap.makeGLatLng(points.points[0].point);
         }else{
@@ -169,8 +185,9 @@
         }
 
         newBounds = new google.maps.LatLngBounds(initialPoint, initialPoint);
+        lenPoints = points.points.length;
 
-        for(var i = 1, len = points.points.length; i < len; i++){
+        for(var i = 1, len = lenPoints; i < len; i++){
           newBounds.extend($.shakeMap.makeGLatLng(points.points[i].point));
         }
 
@@ -354,7 +371,7 @@
       resizer: "",
       resizer_height:0,
       use_spider:false,
-      onClick:function(marker){},
+      onClick:function(marker){}
     },
     makeGLatLng:function(place_point){
       return new google.maps.LatLng(place_point.lat, place_point.lng);
