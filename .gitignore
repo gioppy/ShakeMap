@@ -1,4 +1,7 @@
 *.class
+.DS_Store
+demo
+lib
 
 # Package Files #
 *.jar
