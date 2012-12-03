@@ -1,7 +1,7 @@
 /*
- * ShakeMap v0.0.4 - jQuery plugin for creating Google Maps, based on jMapping plugin created by Brian Landau (Viget Labs)
+ * ShakeMap v2.0 - jQuery plugin for creating Google Maps, based on jMapping plugin created by Brian Landau (Viget Labs)
  *
- * Copyright (c) 2011 Giovanni Buffa
+ * Copyright (c) 2012 Giovanni Buffa
  * MIT License: http://www.opensource.org/licenses/mit-license.php
  *
  */
