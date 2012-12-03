@@ -1,5 +1,5 @@
 /*
- * ShakeMap v0.0.4 - jQuery plugin for creating Google Maps, based on jMapping plugin created by Brian Landau (Viget Labs)
+ * ShakeMap v1.0 - jQuery plugin for creating Google Maps, based on jMapping plugin created by Brian Landau (Viget Labs)
  *
  * Copyright (c) 2011 Giovanni Buffa
  * MIT License: http://www.opensource.org/licenses/mit-license.php
@@ -43,18 +43,17 @@
           if(settings.use_spider == true){
             oms = new OverlappingMarkerSpiderfier(map, {markersWontMove: true, markersWontHide: true});
             for(var i = 0; i < totalMarker; i++){
-	          marker.push(oms.addMarker(createMarker(points.points[i])));
-	        }
-	        markerManager = new MarkerClusterer(map, oms.getMarkers(), mcOptions);
+	            marker.push(oms.addMarker(createMarker(points.points[i])));
+	          }
+	          markerManager = new MarkerClusterer(map, oms.getMarkers(), mcOptions);
             oms.addListener('click', function(marker) {
-              setMarkerAction(marker);
-	        });
+              setOmsAction(marker);
+            });
           }else{
             for(var i = 0; i < totalMarker; i++){
-	          marker.push(createMarker(points.points[i]));
-              setMarkerAction(marker[i]);
-	        }
-	        markerManager = new MarkerClusterer(map, marker, mcOptions);
+	            marker.push(createMarker(points.points[i]));
+	           }
+	           markerManager = new MarkerClusterer(map, marker, mcOptions);
           }
           //apply style to the cluster
           if(settings.clusterer_styles.length != 0){
@@ -71,17 +70,17 @@
           if(settings.use_spider == true){
             oms = new OverlappingMarkerSpiderfier(map, {markersWontMove: true, markersWontHide: true});
             for(var i = 0; i < totalMarker; i++){
-	          marker.push(oms.addMarker(createMarker(points.points[i])));
-	        }
-	        markerManager = new MarkerClusterer(map, oms.getMarkers(), mcOptions);
-            oms.addListener('click', function(marker) {
-              setMarkerAction(marker);
-	        });
+	            marker.push(oms.addMarker(createMarker(points.points[i])));
+	          }
+	          markerManager = new MarkerClusterer(map, oms.getMarkers(), mcOptions);
+              oms.addListener('click', function(marker) {
+                setOmsAction(marker);
+              });
           }else{
             for(var i = 0; i < totalMarker; i++){
 	          marker.push(createMarker(points.points[i]));
               setMarkerAction(marker[i]);
-	        }
+            }
             markerManager = new MarkerClusterer(map, marker, mcOptions);
           }
         }else{
@@ -230,92 +229,108 @@
         if(place_elm.point.informazioni){
           marker.desc = place_elm.point.informazioni;
         }
-        return marker;
-      };
-
-      var setMarkerAction = function(marker){
-        switch(settings.marker_action){
-          //normal infowindow function
-          case "infowindow":
-            info_window = new google.maps.InfoWindow({
-              content: $('<div/>').html(marker.desc).text()
-              //maxWidth: settings.info_window_max_width
-            });
-            info_windows.push(info_window);
-            if(settings.use_spider == true){
-              $.each(info_windows, function(index, iwindow){
-                if(info_window != iwindow){
-                  iwindow.close();
-                }
+        
+        if(settings.use_spider == false){
+          switch(settings.marker_action){
+            //normal infowindow function
+            case "infowindow":
+              var infowindow = new google.maps.InfoWindow({
+                content: marker.desc
               });
-              info_window.open(map, marker);
-            }else{
+              info_windows.push(infowindow);
               google.maps.event.addListener(marker, 'click', function(){
                 $.each(info_windows, function(index, iwindow){
-                  if(info_window != iwindow){
-                    iwindow.close();
-                  }
+                  if(infowindow != iwindow){iwindow.close();}
                 });
-                info_window.open(map, marker);
+                infowindow.open(marker.get('map'), marker);
               });
-            }
-          break;
-        
-          //infobox ballon function
-          case "infobox":
-            var offset, size, infoOptions, infobox;
-            offset = settings.infobox_settings.offset;
-            infoOptions = {
-              content: $('<div/>').html(marker.desc).text(),
-              disableAutoPan: false,
-              maxWidth: 0,
-              pixelOffset: new google.maps.Size(offset[0], offset[1]),
-              zIndex: null,
-              boxStyle:{
-                background: "url("+settings.infobox_settings.background+") left top no-repeat",
-                opacity: 1,
-                width:settings.infobox_settings.width,
-                height:settings.infobox_settings.height
-              },
-              closeBoxMargin: settings.infobox_settings.closeBoxMargin,
-              closeBoxURL: settings.infobox_settings.closeBoxURL,
-              infoBoxClearance: new google.maps.Size(1, 1),
-              isHidden: false,
-              pane: "floatPane",
-              enableEventPropagation: false
-            }
-            infobox = new InfoBox(infoOptions);
-            info_windows.push(infobox);
-            if(settings.use_spider == true){
-              $.each(info_windows, function(index, iwindow){
-                if(infobox != iwindow){
-                  iwindow.close();
-                }
-              });
-              infobox.open(map, marker);
-            }else{
+            break;
+            
+            //infobox overlay function
+            case "infobox":
+              var infobox = new InfoBox(setInfoboxOption(place_elm.point.informazioni));
+              info_windows.push(infobox);
               google.maps.event.addListener(marker, 'click', function(){
                 $.each(info_windows, function(index, iwindow){
                   if(infobox != iwindow){
                     iwindow.close();
                   }
                 });
-                infobox.open(map, marker);
+                infobox.open(marker.get('map'), marker);
               });
-            }
+            break;
+            
+            //direct click, no infowindow
+            case "click":
+            google.maps.event.addListener(marker, 'click', function(){
+              settings.onClick(this);
+            });
+            break;
+          };
+        }
+        
+        return marker;
+      };
+      
+      var setOmsAction = function(marker){
+        switch(settings.marker_action){
+          //normal infowindow function
+          case "infowindow":
+            infowindow = new google.maps.InfoWindow({
+              content:marker.desc
+            });
+            info_windows.push(infowindow);
+            $.each(info_windows, function(index, iwindow){
+              if(infowindow != iwindow){
+                iwindow.close();
+              }
+            });
+            infowindow.open(map, marker);
+          break;
+        
+          //infobox overlay function
+          case "infobox":
+            var infobox = new InfoBox(setInfoboxOption(marker.desc));
+            info_windows.push(infobox);
+            $.each(info_windows, function(index, iwindow){
+              if(infobox != iwindow){
+                iwindow.close();
+              }
+            });
+            infobox.open(map, marker);
           break;
         
           //direct click, no infowindow
           case "click":
-            if(settings.use_spider == true){
-              settings.onClick(marker);
-            }else{
-              google.maps.event.addListener(marker, 'click', function(){
-                settings.onClick(this);
-              });
-            }
+            settings.onClick(marker);
           break;
         }
+      }
+      
+      var setInfoboxOption = function(content){
+        var infoOptions, offset;
+        offset = settings.infobox_settings.offset;
+        infoOptions = {
+          content: content,
+          disableAutoPan: false,
+          maxWidth: 0,
+          pixelOffset: new google.maps.Size(offset[0], offset[1]),
+          zIndex: null,
+          boxStyle:{
+            background: "url("+settings.infobox_settings.background+") left top no-repeat",
+            opacity: 1,
+            width:settings.infobox_settings.width,
+            height:settings.infobox_settings.height
+          },
+          closeBoxMargin: settings.infobox_settings.closeBoxMargin,
+          closeBoxURL: settings.infobox_settings.closeBoxURL,
+          infoBoxClearance: new google.maps.Size(1, 1),
+          isHidden: false,
+          pane: "floatPane",
+          enableEventPropagation: false
+        }
+        
+        return infoOptions;
       }
 
       var updateMarkerManager = function(){
