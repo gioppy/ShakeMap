@@ -61,7 +61,9 @@
           }
           //settings user position if possible
           if(settings.use_geo == true){
-            navigator.geolocation.getCurrentPosition(onGeoSuccess, onGeoError);
+            google.maps.event.addListenerOnce(map, 'idle', function(){
+              navigator.geolocation.getCurrentPosition(onGeoSuccess, onGeoError);
+            })
           }
         }
 
@@ -107,10 +109,10 @@
         var u_position = position.coords;
         map.setCenter(new google.maps.LatLng(u_position.latitude, u_position.longitude));
         map.setZoom(10);
-        var pos = $.shakeMap.makeGLatLng({"lat":u_position.latitude ,"lng":u_position.longitude});
+        var pos = $.shakeMap.makeGLatLng([u_position.longitude, u_position.latitude]);
         var home = new google.maps.Marker({
           position:pos,
-          icon:"home.png",
+          icon:settings.geo_marker,
           map:map
         });
         marker.push(home);
@@ -163,7 +165,7 @@
         if(totalMarker > 1){
           map.fitBounds(bounds);
         }else{
-          map.setCenter(new google.maps.LatLng(points.points[0].point.lat, points.points[0].point.lng));
+          map.setCenter(new google.maps.LatLng(points.features[0].geometry.coordinates[1], points.features[0].geometry.coordinates[0]));
           //forze zoom if defined
           if(settings.force_zoom_level){
             map.setZoom(settings.force_zoom_level);
@@ -376,6 +378,7 @@
       clusterer_styles:[],
       default_point:{lat:0.0, lng:0.0},
       use_geo:false,
+      geo_marker:"",
       styled:false,
       styled_obj:{},
       infobox_settings:{"offset":[0,0], "width":"", "height":"", "background":"", "closeBoxMargin":"9px 38px 2px 2px", "closeBoxURL":""},
