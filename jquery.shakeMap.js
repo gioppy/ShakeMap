@@ -8,7 +8,7 @@
 
 (function($){
   $.shakeMap = function(map_elm, options){
-    var settings, gmarkers, marker, mapped, map, markerManager, places, bounds, boundsJ, shakeMapper, info_windows, points, totalMarker, mcOptions, oms;
+    var settings, gmarkers, marker, mapped, map, markerManager, places, bounds, boundsJ, shakeMapper, info_windows, points, totalMarker, mcOptions, oms, homePosition;
     map_elm = (typeof map_elm == "string") ? $(map_elm).get(0) : map_elm;
 
     if(!($(map_elm).data('shakeMap'))){
@@ -19,6 +19,7 @@
 
       var init = function(doUpdate, data){
         var min_zoom, zoom_level;
+        gmarkers = {};
         marker = [];
         info_windows = [];
         if(doUpdate){
@@ -26,6 +27,27 @@
         }else{
           points = settings.data;
         }
+        
+        if(settings.use_geo == true){
+          if(typeof homePosition != 'undefined'){
+            var icon = settings.category_icon.field_name;
+            var coordinates = {
+              "type":"Feature",
+              'geometry':{
+                'type':'Point',
+                'coordinates':[homePosition.longitude, homePosition.latitude]
+              },
+              'properties':{
+                'name':'',
+                'description':'',
+                'nid':''
+              }
+            };
+            coordinates.properties[icon] = 'user';
+            points.features.push(coordinates);
+          }
+        }
+          
         totalMarker = points.features.length;
         bounds = getBounds(doUpdate);
 
@@ -103,11 +125,15 @@
             return false;
           });
         }
+        
+        attachMapsEventToLinks();
       };
 
       var onGeoSuccess = function(position){
         var u_position = position.coords;
-        map.setCenter(new google.maps.LatLng(u_position.latitude, u_position.longitude));
+        homePosition = u_position;
+        var pos = new google.maps.LatLng(u_position.latitude, u_position.longitude);
+        map.setCenter(pos);
         map.setZoom(10);
         var pos = $.shakeMap.makeGLatLng([u_position.longitude, u_position.latitude]);
         var home = new google.maps.Marker({
@@ -118,6 +144,12 @@
         marker.push(home);
         markerManager.clearMarkers();
         markerManager = new MarkerClusterer(map, marker, mcOptions);
+        var geocoder = new google.maps.Geocoder();
+        geocoder.geocode({'latLng':pos}, function(result, status){
+          if(status == google.maps.GeocoderStatus.OK){
+            settings.afterGeo(map, u_position, result);
+          }
+        });
       }
 
       var onGeoError = function(e){
@@ -128,12 +160,10 @@
         //create custom styles
         var CUSTOM_MAPTYPE, customStyle, mapOptions, styledMapOptions, customMap;
         
-        if(settings.style != false){
+        if(settings.style.length != 0){
           //styled map
           CUSTOM_MAPTYPE = 'custom';
-          if(settings.styles){
-            customStyle = settings.styles;
-          }
+          customStyle = settings.style;
           mapOptions = {
             navigationControlOptions: {style: google.maps.NavigationControlStyle.LARGE},
             mapTypeControl: false,
@@ -176,7 +206,7 @@
       };
 
       var getBounds = function(doUpdate){
-        var newBounds, initialPoint, lenPoints;
+        var newBounds, initialPoint, lenPoints, coords;
         if(totalMarker){
           initialPoint = $.shakeMap.makeGLatLng(points.features[0].geometry.coordinates);
         }else{
@@ -193,20 +223,35 @@
         return newBounds;
       };
 
-      var chooseIconOptions = function(category){
-        if(settings.category_icon_options){
-          var category_icon_options = settings.category_icon_options;
-          return category_icon_options[category] || category_icon_options['default'];
+      var addMarkerIcon = function(category){
+        if(settings.category_icon.options){
+          var category_icon, url, size, origin, anchor, image;
+          category_icon = settings.category_icon.options;
+          url = category_icon[category];
+          size = settings.category_icon.size;
+          origin = settings.category_icon.origin;
+          anchor = settings.category_icon.anchor;
+          
+          image = new google.maps.MarkerImage(
+            url,
+            new google.maps.Size(size[0], size[1]),
+            new google.maps.Point(origin[0], origin[1]),
+            new google.maps.Point(anchor[0], anchor[1])
+          );
+          
+          return image;
         }else{
           return {};
         }
       };
 
       var createMarker = function(place_elm){
-        var $place_elm = $(place_elm), point, marker, icon_options;
+        var $place_elm = $(place_elm), point, marker, icon_options, mid;
         point = $.shakeMap.makeGLatLng(place_elm.geometry.coordinates);
-        if(settings.category_icon_options){
-          icon_options = chooseIconOptions(place_elm.point.categoria);
+        mid = settings.id;
+        if(settings.category_icon.options){
+          category = settings.category_icon.field_name;
+          icon_options = addMarkerIcon(place_elm.properties[category]);
           marker = new google.maps.Marker({
             icon:icon_options,
             position:point,
@@ -267,8 +312,19 @@
             break;
           };
         }
-
+        
+        gmarkers[parseInt(place_elm.properties[mid], 10)] = marker;
         return marker;
+      };
+      
+      var attachMapsEventToLinks = function(){
+        $('a.open-infowindow').live('click', function(e){
+          //e.preventDefault();
+          var marker_index = parseInt($(this).data('marker'), 10);
+          google.maps.event.trigger(gmarkers[marker_index], "click");
+          map.setCenter(gmarkers[marker_index].position);
+          map.setZoom(15);
+        });
       };
 
       var setOmsAction = function(marker){
@@ -377,16 +433,24 @@
       max_zoom:15,
       clusterer_styles:[],
       default_point:{lat:0.0, lng:0.0},
+      id:'id',
+      category_icon:{
+        'field_name':"",
+        'options':{},
+        'size':[32,32],
+        'origin':[0,0],
+        'anchor':[0,0]
+      },
       use_geo:false,
       geo_marker:"",
-      styled:false,
-      styled_obj:{},
+      style:{},
       infobox_settings:{"offset":[0,0], "width":"", "height":"", "background":"", "closeBoxMargin":"9px 38px 2px 2px", "closeBoxURL":""},
       marker_action:"infowindow", //infowindow, infobox, click
       resizer: "",
       resizer_height:0,
       use_spider:false,
-      onClick:function(marker){}
+      onClick:function(marker){},
+      afterGeo:function(map, position, result){}
     },
     makeGLatLng:function(place_point){
       return new google.maps.LatLng(place_point[1], place_point[0]);
