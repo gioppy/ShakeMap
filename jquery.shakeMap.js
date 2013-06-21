@@ -17,13 +17,31 @@
 
       mcOptions = {gridSize:settings.grid_size, maxZoom: settings.max_zoom, styles:settings.cluster_styles};
 
-      var init = function(doUpdate, data){
+      var init = function(doUpdate, data, proxi){
         var min_zoom, zoom_level;
         gmarkers = {};
         marker = [];
         info_windows = [];
         if(doUpdate){
           points = data;
+          if(typeof proxi != 'undefined' && proxi.length > 0){
+            settings.use_geo = false;
+            var icon = settings.category_icon.field_name;
+            var coordinates = {
+              "type":"Feature",
+              'geometry':{
+                'type':'Point',
+                'coordinates':[proxi[1], proxi[0]]
+              },
+              'properties':{
+                'name':'',
+                'description':'',
+                'nid':''
+              }
+            };
+            coordinates.properties[icon] = 'user';
+            points.features.push(coordinates);
+          }
         }else{
           points = settings.data;
         }
@@ -47,6 +65,24 @@
             points.features.push(coordinates);
           }
         }
+        
+        /*if(proxi.length > 0){
+          var icon = settings.category_icon.field_name;
+          var coordinates = {
+            "type":"Feature",
+            'geometry':{
+              'type':'Point',
+              'coordinates':[proxi[1], proxi[0]]
+            },
+            'properties':{
+              'name':'',
+              'description':'',
+              'nid':''
+            }
+          };
+          coordinates.properties[icon] = 'user';
+          points.features.push(coordinates);
+        }*/
           
         totalMarker = points.features.length;
         bounds = getBounds(doUpdate);
@@ -84,7 +120,11 @@
           //settings user position if possible
           if(settings.use_geo == true){
             google.maps.event.addListenerOnce(map, 'idle', function(){
-              navigator.geolocation.getCurrentPosition(onGeoSuccess, onGeoError);
+              if(navigator.geolocation){
+                navigator.geolocation.getCurrentPosition(onGeoSuccess, onGeoError);
+              }else{
+                settings.errorGeo({code:0});
+              }
             })
           }
         }
@@ -125,8 +165,9 @@
             return false;
           });
         }
-        
-        attachMapsEventToLinks();
+        if(settings.id != ''){
+          attachMapsEventToLinks();
+        }
       };
 
       var onGeoSuccess = function(position){
@@ -153,7 +194,7 @@
       }
 
       var onGeoError = function(e){
-        console.log(e);
+        settings.errorGeo(e);
       }
 
       var createMap = function(){
@@ -319,11 +360,12 @@
       
       var attachMapsEventToLinks = function(){
         $('a.open-infowindow').live('click', function(e){
-          //e.preventDefault();
           var marker_index = parseInt($(this).data('marker'), 10);
           google.maps.event.trigger(gmarkers[marker_index], "click");
           map.setCenter(gmarkers[marker_index].position);
           map.setZoom(15);
+          
+          return false;
         });
       };
 
@@ -408,9 +450,9 @@
         mapped:mapped,
         map:map,
         getBounds:getBounds,
-        update: function(args){
+        update: function(args, proxi){
           if ($(document).trigger('beforeUpdate.jMapping', [this])  != false){
-            init(true, args);
+            init(true, args, proxi);
             this.map = map;
             this.marker = marker;
             this.markerManager = markerManager;
@@ -433,7 +475,7 @@
       max_zoom:15,
       clusterer_styles:[],
       default_point:{lat:0.0, lng:0.0},
-      id:'id',
+      id:'',
       category_icon:{
         'field_name':"",
         'options':{},
@@ -450,16 +492,17 @@
       resizer_height:0,
       use_spider:false,
       onClick:function(marker){},
-      afterGeo:function(map, position, result){}
+      afterGeo:function(map, position, result){},
+      errorGeo:function(e){}
     },
     makeGLatLng:function(place_point){
       return new google.maps.LatLng(place_point[1], place_point[0]);
     }
   });
 
-  $.fn.shakeMap = function(options, args){
+  $.fn.shakeMap = function(options, args, proxi){
     if((options == 'update') && $(this[0]).data('shakeMap')){
-      $(this[0]).data('shakeMap').update(args);
+      $(this[0]).data('shakeMap').update(args, proxi);
     }else{
       if(options == 'update') options = {};
       $(this[0]).data('shakeMap', $.shakeMap(this[0], options));
