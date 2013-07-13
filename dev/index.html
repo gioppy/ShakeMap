@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>ShakeMap - Demo</title>
+	<style type="text/css" media="screen">
+		#map-one,
+		#map-two{
+		width:500px;
+		height:300px;
+		float:left;
+		}
+		
+		span.clear{
+		clear:both;
+		display:block;
+		height:0px;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="map-one"></div>
+	<div id="map-two"></div>
+	
+	<span class="clear"></span>
+	
+	<div id="map-one-links"></div>
+	<div id="map-two-links"></div>
+	
+	<div>
+  	<ul>
+    	<li><a href="#" id="update-map-one">UPDATE MAP 1</a></li>
+    	<li><a href="#" id="update-map-two">UPDATE MAP 2</a></li>
+    	<li><a href="#" id="destroy-map-one">DESTROY MAP 1</a></li>
+  	</ul>
+	</div>
+
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&amp;language=it&amp;region=IT"></script>
+<script type="text/javascript" src="../lib/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="../lib/oms.min.js"></script>
+<script type="text/javascript" src="../lib/infobox.js"></script>
+<script type="text/javascript" src="../lib/markerclusterer.js"></script>
+<script type="text/javascript" src="jquery.shakeMap.js"></script>
+<script type="text/javascript">
+jQuery(function(){
+  var category = {
+    'field_name':"nothing",
+    'options':{
+      'test':'marker/pittura.png',
+      'minacciolo':'marker/temp.png',
+      'user':'home.png'
+    },
+    'size':[30,50],
+    'origin':[0,0],
+    'anchor':[15,42]
+  }
+  
+  var infoBoxOption = {
+    offset:[-130,-86],
+    width:"231px",
+    height:"173px",
+    background:"infobox/background.png",
+    closeBoxMargin:"9px 38px 2px 2px",
+    closeBoxURL:"infobox/close.gif"
+  };
+  
+  var style = [ { "featureType": "road.local", "stylers": [ { "color": "#ffffff" } ] },{ "featureType": "water", "stylers": [ { "color": "#3fc6f3" } ] },{ "featureType": "landscape", "stylers": [ { "color": "#46d7c6" } ] },{ "featureType": "road.highway", "elementType": "geometry", "stylers": [ { "color": "#ffffff" } ] },{ "featureType": "poi", "elementType": "geometry", "stylers": [ { "color": "#b1d8d3" } ] },{ "featureType": "road.arterial", "stylers": [ { "color": "#d8e0e9" } ] } ];
+  
+  /*jQuery('#map-two').shakemap({
+    data:'tv.json',
+    categoryIcons:category
+  });*/
+  
+  /*jQuery('#map-one').shakemap({
+    data:'tv.json',
+    category_icons:category,
+    geolocation:{
+      active:true,
+      marker:'home.png',
+      onGeolocation:function(map, position, result){
+        jQuery('#map-one').shakemap('update', {
+          data:'ud.json',
+          category_icons:category
+        });
+      },
+      onError:function(error){
+        //console.log(error);
+      }
+    }
+  });*/
+  
+  jQuery.getJSON('tv.json', function(data){
+    jQuery('#map-one').shakemap({
+      data:data,
+      categoryIcons:category,
+      mapOptions:{
+        scrollwheel:false,
+        draggable:false,
+        streetViewControl:false,
+        zoomControlOptions:{style:google.maps.ZoomControlStyle.LARGE},
+        mapTypeControl:false
+      }
+      //mapStyle:style
+    });
+  });
+	
+	/*jQuery('#update-map-two').click(function(){
+	  jQuery('#map-two').shakemap('update', {
+      data:'ud.json',
+      category_icons:category
+    });
+  	return false;
+	})*/
+	
+	jQuery('#update-map-two').click(function(){
+	  jQuery.getJSON('ve.json', function(data){
+	    jQuery('#map-two').shakemap('update', {
+        data:data,
+        categoryIcons:category,
+        sidebar:{
+          mid:'nid',
+          active:true,
+          target:"#map-two-links"
+        }
+      });
+      jQuery('#map-two-links').empty();
+      var total = data.features.length;
+      for(var i = 0; i < total; i++){
+        var nid = data.features[i].properties.nid;
+        jQuery('#map-two-links').append('<a href="#" class="open-infowindow" data-marker="'+nid+'">'+i+'</a>');
+      }
+	  })
+	  /*jQuery('#map-one').shakemap('update', {
+      data:'tv.json',
+      category_icons:category,
+      action:"infobox",
+      infobox_settings:infoBoxOption
+    });*/
+  	return false;
+	})
+	
+	jQuery('#destroy-map-one').click(function(){
+	  jQuery('#map-one').shakemap('destroy');
+	  
+	  return false;
+	});
+	
+	jQuery('#update-map-one').click(function(){
+	  jQuery.getJSON('tv.json', function(data){
+	    jQuery('#map-one').shakemap('update', {
+        data:data,
+        categoryIcons:category,
+        spider:true,
+        sidebar:{
+          mid:'nid',
+          active:true,
+          target:"#map-one-links"
+        }
+      });
+      jQuery('#map-one-links').empty();
+      var total = data.features.length;
+      for(var i = 0; i < total; i++){
+        var nid = data.features[i].properties.nid;
+        jQuery('#map-one-links').append('<a href="#" class="open-infowindow" data-marker="'+nid+'">'+i+'</a>');
+      }
+	  })
+	  /*jQuery('#map-one').shakemap('update', {
+      data:'tv.json',
+      category_icons:category,
+      action:"infobox",
+      infobox_settings:infoBoxOption
+    });*/
+  	return false;
+	})
+})
+</script>
+</body>
+</html>
