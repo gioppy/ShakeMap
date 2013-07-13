@@ -3,17 +3,17 @@ ShakeMap
 
 ShakeMap jQuery plugin
 
-This is a jQuery plugin for managing Google Maps from a JSON string.
+This is a jQuery plugin for managing Google Maps from a GeoJSON file.
 The base plugin is a modified version of the original plugin jMapping, created by Brian Landau (Viget Labs - http://vigetlabs.github.com/jmapping/).
 In this fork, I have changed the way the data is selected and manipulated. All the infomation about a location is retrived using AJAX and manipulated in real time by the plugin.
 
 The plugin requires:
 
 - MarkerClucterer - http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/docs/reference.html
-- OverlappingMarkerSpiderfier - https://github.com/jawj/OverlappingMarkerSpiderfier
 
 Optional requirement:
 
+- OverlappingMarkerSpiderfier - https://github.com/jawj/OverlappingMarkerSpiderfier
 - Infobox - http://code.google.com/p/gmaps-samples-v3/source/browse/trunk/infowindow_custom/?r=37
 
 Examples
@@ -23,7 +23,7 @@ Using the plugin is very simple! Call the JSON via AJAX and call the shakeMap fu
 
     jQuery(function(){  
       jQuery.getJSON('out.json', function(data, success){  
-        if(success && data.points.length > 0){  
+        if(success){  
           jQuery('#map').shakeMap({  
             data:data  
           });  
@@ -46,4 +46,5 @@ styled:false, //simple check if use or not the styled map
 styled_obj:{}, //styled map object 
 infobox_settings:{"offset":[0,0], "width":"", "height":"", "background":"", "closeBoxMargin":"9px 38px 2px 2px", "closeBoxURL":""}, //infobox setting object  
 marker_action:"infowindow", //action to the marker: infowindow, infobox, click  
-use_spider:false //add OverlappingMarkerSpiderfier to the marker
+use_spider:false //add OverlappingMarkerSpiderfier to the marker  
+onClick:function(marker){} //on click event when marker_action is set to "click"
