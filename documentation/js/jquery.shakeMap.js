@@ -427,6 +427,7 @@ jQuery.skmap = {
         $.skmap.infowindows.splice(hash, 1);
         $.skmap.rawPosition.splice(hash, 1);
         $.skmap.oms.splice(hash, 1);
+        
         $(this).replaceWith(clone);
       })
     }

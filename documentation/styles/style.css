@@ -1,0 +1,550 @@
+/*GENERAL*/
+
+body{
+font:85% 'Bariol Light', Arial, sans-serif;
+color:#465866;
+}
+
+h1, h2, h3, h4, h5, h6{
+font-weight:normal;
+text-transform:uppercase;
+}
+
+a{
+color:#f27935;
+}
+
+strong{
+font-family:'Bariol Regular', Arial, sans-serif;
+font-weight:normal;
+}
+
+span.clear{
+display:block;
+clear:both;
+height:0;
+}
+
+#wrapper{
+position:absolute;
+left:0;
+top:0;
+width:100%;
+height:100%;
+}
+
+#wrapper .fullscreen{
+position:relative;
+width:100%;
+height:100%;
+}
+
+#wrapper .doc-page{
+position:relative;
+width:100%;
+}
+
+/*LOGO*/
+
+#logo{
+background:#474f58 fixed;
+}
+
+#logo h1{
+width:475px;
+height:159px;
+position:absolute;
+left:50%;
+top:50%;
+margin:-90px 0 0 -317px;
+padding:21px 0 0 160px;
+background:url(../images/logo.png) left center no-repeat;
+font:8em 'Bariol Thin', Arial, sans-serif;
+color:#d8e0e9;
+text-transform:none;
+}
+
+#logo h1 span{
+font-family:'Bariol Regular', Arial, sans-serif;
+font-weight:normal;
+}
+
+#logo h2{
+width:475px;
+font:3em 'Bariol Bold', Arial, sans-serif;
+color:#d8e0e9;
+position:absolute;
+left:50%;
+top:55%;
+padding:0 0 0 160px;
+margin:0 0 0 -317px;
+text-transform:none;
+}
+
+#logo a{
+display:block;
+width:38px;
+height:22px;
+background:url(../images/arrow_down.gif) no-repeat;
+text-indent:-9999px;
+position:absolute;
+bottom:10%;
+left:50%;
+margin:0 0 0 -19px;
+}
+
+/*INFO*/
+
+#info{
+background:#1fbba6 fixed;
+}
+
+#info-slideshow{
+width:700px;
+height:380px;
+background:#fff;
+border-radius:6px;
+position:absolute;
+left:50%;
+top:50%;
+margin:-190px 0 0 -350px;
+}
+
+#info-slideshow header,
+#demo-content header{
+height:33px;
+background:#373d46;
+color:#f1f1f3;
+font-size:1.2em;
+padding:18px 18px 0 18px;
+border-radius:6px 6px 0 0;
+}
+
+#info-slideshow article{
+width:640px;
+padding:30px;
+font-size:2em;
+}
+
+#info-slideshow article p{
+margin:0 0 21px 0;
+line-height:1.3em;
+}
+
+.slides-controls a{
+display:block;
+width:34px;
+height:57px;
+background:url(../images/sprite_slider.png) no-repeat;
+text-indent:-9999px;
+position:absolute;
+top:50%;
+margin:-28px 0 0 0;
+}
+
+.slides-controls a#next{
+background-position:-34px 0;
+right:5%;
+}
+
+.slides-controls a#next:hover{
+background-position:-34px -57px;
+}
+
+.slides-controls a#prev{
+left:5%;
+}
+
+.slides-controls a#prev:hover{
+background-position:0 -57px;
+}
+
+/*DEMO*/
+
+#demo{
+background:#eaedf1 fixed;
+}
+
+#demo-content{
+width:930px;
+height:590px;
+background:#fff;
+position:absolute;
+left:50%;
+top:50%;
+margin:-295px 0 0 -465px;
+border-radius:6px;
+}
+
+#demo-content .map-demo{
+height:420px;
+padding:20px;
+}
+
+.map-demo h2{
+font:1.1em 'Bariol Regular', Arial, sans-serif;
+color:#000;
+text-transform:none;
+}
+
+#map-with-sidebar h2 a{
+color:#000;
+text-decoration:none;
+cursor:default;
+}
+
+.map{
+width:100%;
+height:420px;
+}
+
+#map-with-sidebar{
+width:70%;
+display:none;
+}
+
+#sidebar{
+width:28%;
+display:none;
+}
+
+#sidebar h2{
+font-size:1.1em;
+margin:0 0 6px 0;
+}
+
+#sidebar h2 a{
+text-decoration:none;
+}
+
+#map-1,
+#map-2{
+width:49%;
+display:none;
+}
+
+#map-1,
+#map-with-sidebar{
+float:left;
+}
+
+#map-2,
+#sidebar{
+float:right;
+}
+
+#demo-content footer{
+height:79px;
+}
+
+#demo-content footer li{
+display:block;
+width:93px;
+height:79px;
+float:left;
+text-align:center;
+}
+
+#demo-content footer li.first a{
+border-radius:0 0 0 6px;
+}
+
+#demo-content footer li.last a{
+border-radius:0 0 6px 0;
+border:none;
+}
+
+#demo-content footer a{
+display:block;
+height:32px;
+padding:47px 0 0 0;
+color:#636d7f;
+text-decoration:none;
+text-transform:uppercase;
+font:0.8em 'Bariol Bold', Arial, sans-serif;
+background:url(../images/sprite_demo.png) #f9fafc;
+border-right:1px solid #eaedf1;
+border-top:1px solid #eaedf1;
+}
+
+#demo-content footer .active a.demo-01{
+background-position:0 -79px;
+}
+
+#demo-content footer a.demo-02{
+background-position:-93px 0;
+}
+
+#demo-content footer a.demo-02:hover,
+#demo-content footer a.demo-02:focus,
+#demo-content footer .active a.demo-02{
+background-position:-93px -79px;
+}
+
+#demo-content footer a.demo-03{
+background-position:-186px 0;
+}
+
+#demo-content footer a.demo-03:hover,
+#demo-content footer a.demo-03:focus,
+#demo-content footer .active a.demo-03{
+background-position:-186px -79px;
+}
+
+#demo-content footer a.demo-04{
+background-position:-279px 0;
+}
+
+#demo-content footer a.demo-04:hover,
+#demo-content footer a.demo-04:focus,
+#demo-content footer .active a.demo-04{
+background-position:-279px -79px;
+}
+
+#demo-content footer a.demo-05{
+background-position:-465px 0;
+}
+
+#demo-content footer a.demo-05:hover,
+#demo-content footer a.demo-05:focus,
+#demo-content footer .active a.demo-05{
+background-position:-465px -79px;
+}
+
+#demo-content footer a.demo-06{
+background-position:-372px 0;
+}
+
+#demo-content footer a.demo-06:hover,
+#demo-content footer a.demo-06:focus,
+#demo-content footer .active a.demo-06{
+background-position:-372px -79px;
+}
+
+#demo-content footer a.demo-07{
+background-position:-558px 0;
+}
+
+#demo-content footer a.demo-07:hover,
+#demo-content footer a.demo-07:focus,
+#demo-content footer .active a.demo-07{
+background-position:-558px -79px;
+}
+
+#demo-content footer a.demo-08{
+background-position:-837px 0;
+}
+
+#demo-content footer a.demo-08:hover,
+#demo-content footer a.demo-08:focus,
+#demo-content footer .active a.demo-08{
+background-position:-837px -79px;
+}
+
+#demo-content footer a.demo-09{
+background-position:-651px 0;
+}
+
+#demo-content footer a.demo-09:hover,
+#demo-content footer a.demo-09:focus,
+#demo-content footer .active a.demo-09{
+background-position:-651px -79px;
+}
+
+#demo-content footer a.demo-10{
+background-position:-744px 0;
+}
+
+#demo-content footer a.demo-10:hover,
+#demo-content footer a.demo-10:focus,
+#demo-content footer .active a.demo-10{
+background-position:-744px -79px;
+}
+
+#demo-content footer a:hover,
+#demo-content footer a:focus,
+#demo-content footer .active a{
+background-color:#fff;
+border-top:1px solid #fff;
+}
+
+.infoBox h2{
+padding:24px 0 6px 12px;
+}
+
+.infoBox p{
+padding:0 6px 0 12px;
+}
+
+/*DOWNLOAD*/
+
+#download{
+background:#fff fixed;
+}
+
+#download-content{
+width:740px;
+height:455px;
+position:absolute;
+left:50%;
+top:50%;
+margin:-227px 0 0 -370px;
+}
+
+.column-1{
+width:370px;
+float:left;
+}
+
+.column-1 div{
+padding:20px;
+border-bottom:1px solid #fff;
+}
+
+.column-1 h3,
+.column-2 h2{
+font:1.2em 'Bariol Bold', Arial, sans-serif;
+margin:0 0 12px 0;
+}
+
+.column-1 li{
+list-style:none;
+font:1.1em/1.5em 'Bariol Regular', Arial, sans-serif;
+}
+
+.column-1 .requirements{
+background:#eff2f6;
+border-radius:6px 6px 0 0;
+}
+
+.column-1 .optionals{
+background:#eaedf1;
+}
+
+.column-1 .working{
+background:#e6e9ed;
+border-radius:0 0 6px 6px;
+}
+
+.column-2{
+width:280px;
+padding:20px 32px 20px 0;
+float:right;
+}
+
+.column-2 p{
+font:1.1em/1.5em 'Bariol Regular', Arial, sans-serif;
+}
+
+.column-2 p.divider{
+font-family:'Bariol Bold', Arial, sans-serif;
+float:left;
+padding:11px 0 0 0;
+margin:0 12px;
+}
+
+.column-2 a.download,
+.column-2 a.docs,
+#update,
+#destroy{
+display:block;
+padding:12px 0;
+font:1.6em/1em 'Bariol Bold', Arial, sans-serif;
+text-align:center;
+color:#fff;
+text-decoration:none;
+background:#ff6633;
+border-radius:3px;
+margin:27px 0;
+}
+
+.column-2 a.docs{
+background:#1FBBA6;
+}
+
+.column-2 .share{
+margin:36px 0 0 0;
+}
+
+/*DOCS*/
+
+#doc-info{
+width:970px;
+margin:30px auto;
+position:relative;
+}
+
+#doc-info section{
+margin:0 0 21px 0;
+}
+
+#doc-info h2{
+font:2em/1em 'Bariol Bold', Arial, sans-serif;
+margin:0 0 30px 0;
+}
+
+#doc-info nav{
+margin:0 0 21px 0;
+}
+
+#doc-info nav li{
+display:inline;
+font-size:1.2em;
+margin:0 9px 0 0;
+}
+
+#doc-info h3{
+font:1.3em/1em 'Bariol Bold', Arial, sans-serif;
+margin:0 0 6px 0;
+}
+
+#doc-info p{
+font-size:1.2em;
+margin:0 0 6px 0;
+}
+
+#doc-info pre{
+margin:0 0 12px 0;
+}
+
+#doc-info th{
+background:#474F58;
+color:#fff;
+padding:3px;
+font-size:1.1em;
+text-transform:uppercase;
+}
+
+#doc-info td{
+padding:3px;
+}
+
+#doc-info td.property{
+font:1.1em 'Bariol Regular', Arial, sans-serif;
+}
+
+#doc-info td.property,
+#doc-info td.default{
+width:20%;
+}
+
+#doc-info td.description{
+width:60%;
+}
+
+#settings em{
+font-family:'Bariol Regular', Arial, sans-serif;
+color:#DD1144;
+}
+
+#settings ul{
+padding:0 0 0 18px;
+}
+
+#demos ul{
+padding:0 0 0 18px;
+}
+
+#demos li{
+line-height:1.5em;
+}
