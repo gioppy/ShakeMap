@@ -67,6 +67,9 @@ jQuery.skmap = {
           var infowindow = new google.maps.InfoWindow({
             content: marker.desc
           });
+          if(!$.isEmptyObject(settings.infowindowOptions)){
+            infowindow.setOptions(settings.infowindowOptions);
+          }
           $.skmap.infowindows[api.getMap(target)].push(infowindow);
           google.maps.event.addListener(marker, 'click', function(){
             $.each($.skmap.infowindows[api.getMap(target)], function(index, iwindow){
@@ -167,6 +170,8 @@ jQuery.skmap = {
         zoom: 9
       }
       $.extend(mapOptions, settings.mapOptions);
+      
+      google.maps.visualRefresh = true;
       
       if(settings.mapStyle.length > 0){
         customMaptype = 'custom';
@@ -389,6 +394,7 @@ jQuery.skmap = {
           onGeolocation:function(map, position, result){},
           onError:function(error){}
         },
+        infowindowOptions:{},
         infoboxSettings:{
           offset:[0,0],
           width:"",
