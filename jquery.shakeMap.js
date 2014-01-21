@@ -353,8 +353,8 @@ jQuery.skmap = {
       $('a.open-infowindow', settings.sidebar.target).live('click', function(){
         var markerIndex = parseInt($(this).data('marker'), 10);
         google.maps.event.trigger($.skmap.gmarkers[api.getMap(target)][markerIndex], 'click');
-        $.skmap.mapHash[api.getMap(target)].map.setZoom(15);
         $.skmap.mapHash[api.getMap(target)].map.setCenter($.skmap.gmarkers[api.getMap(target)][markerIndex].getPosition());
+        $.skmap.mapHash[api.getMap(target)].map.setZoom(15);
         return false;
       });
     }
