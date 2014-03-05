@@ -242,6 +242,10 @@ jQuery.skmap = {
           //init clusterer
           $.skmap.markerManager.push(new MarkerClusterer($.skmap.mapHash[api.getMap(target)].map, $.skmap.markers[api.getMap(target)], clusterOptions));
         }
+        
+        if($.skmap.markers[api.getMap(target)].length == 1 && settings.autoOpen){
+          google.maps.event.trigger($.skmap.markers[api.getMap(target)][0], 'click');
+        }
       }
       
       if(update){
@@ -365,6 +369,7 @@ jQuery.skmap = {
         data:"", //string, object
         action:"infowindow", //infowindow, infobox, direct, null
         markerClick:function(marker){},
+        autoOpen:false, //used only with one marker
         spider:false,
         sidebar:{
           active:false,
