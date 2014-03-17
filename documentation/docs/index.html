@@ -136,7 +136,7 @@
             <tr>
               <td class="property">autoOpen</td>
               <td class="default"><pre><code>false</code></pre></td>
-              <td class="description"><em>boolean</em>. Open automatically a marker, ONLY if there is only one marker in the map.</td>
+              <td class="description"><em>boolean</em>. Open automatically a marker, ONLY if there is only one marker in the <map name="" class=""></map></td>
             </tr>
             <tr>
               <td class="property">spider</td>
@@ -156,7 +156,7 @@
                 <em>object</em>. Settings about using a sidebar with marker list.
                 <ul>
                   <li><strong>active</strong> - <em>boolean</em>, Activate/disactivate sidebar functionality</li>
-                  <li><strong>mid</strong> - <em>string</em>, the name of the field containg reference marker (<a href="demo/08-map-with-sidebar.html">view example</a>)</li>
+                  <li><strong>mid</strong> - <em>string</em>, the name of the field containg reference marker (<a href="demos/08-map-with-sidebar.html">view example</a>)</li>
                   <li><strong>target</strong> - <em>string</em>, the HTML sidebar</li>
                 </ul>
               </td>
@@ -187,7 +187,7 @@
                 <ul>
                   <li><strong>grid_size</strong> - <em>int</em>, the size of the cluster grid</li>
                   <li><strong>max_zoom</strong> - <em>int</em>, maximun zoom to apply cluster</li>
-                  <li><strong>style</strong> - <em>array</em>, the style of the cluster (<a href="demo/09-clusterer.html">view example</a>)</li>
+                  <li><strong>style</strong> - <em>array</em>, the style of the cluster (<a href="demos/09-clusterer.html">view example</a>)</li>
                 </ul>
               </td>
             </tr>
@@ -206,7 +206,7 @@
                 <em>object</em>. Settings about Marker Icons.
                 <ul>
                   <li><strong>field_name</strong> - <em>string</em>, the name of the field in the geoJSON</li>
-                  <li><strong>options</strong> - <em>object</em>, list of all cateogry/image icon (<a href="demo/06-custom-icons.html">view example</a>)</li>
+                  <li><strong>options</strong> - <em>object</em>, list of all cateogry/image icon (<a href="demos/06-custom-icons.html">view example</a>)</li>
                   <li><strong>size</strong> - <em>array</em>, the size of the icon</li>
                   <li><strong>origin</strong> - <em>array</em>, origin point of the icon</li>
                   <li><strong>anchor</strong> - <em>array</em>, anchor point of the icon</li>
@@ -275,12 +275,12 @@
             <tr>
               <td class="property">mapOptions</td>
               <td class="default"><pre><code>{}</code></pre></td>
-              <td class="description"><em>object</em>. Object containing the option for the map (<a href="https://developers.google.com/maps/documentation/javascript/reference#MapOptions" target="_blank">view Gmap API</a>) (<a href="demo/05-map-with-custom-map-options.html">view example</a>)</td>
+              <td class="description"><em>object</em>. Object containing the option for the map (<a href="https://developers.google.com/maps/documentation/javascript/reference#MapOptions" target="_blank">view Gmap API</a>) (<a href="demos/05-map-with-custom-map-options.html">view example</a>)</td>
             </tr>
             <tr>
               <td class="property">mapStyle</td>
               <td class="default"><pre><code>[]</code></pre></td>
-              <td class="description"><em>array</em>. Style array (<a href="https://developers.google.com/maps/documentation/javascript/styling" target="_blank">view Gmap API</a>) (<a href="http://gmaps-samples-v3.googlecode.com/svn/trunk/styledmaps/wizard/index.html" target="_blank">Styled Map Wizard</a>) (<a href="demo/10-map-with-custom-style.html">view example</a>)</td>
+              <td class="description"><em>array</em>. Style array (<a href="https://developers.google.com/maps/documentation/javascript/styling" target="_blank">view Gmap API</a>) (<a href="http://gmaps-samples-v3.googlecode.com/svn/trunk/styledmaps/wizard/index.html" target="_blank">Styled Map Wizard</a>) (<a href="demos/10-map-with-custom-style.html">view example</a>)</td>
             </tr>
           </tbody>
         </table>
@@ -304,14 +304,14 @@
     data:"path/to/my.json"
   });
                 </code></pre></td>
-              <td class="description">Update a pre-rendered map. In the update you must pass all the data to the map (<a href="demo/11-update-map.html">view example</a>)</td>
+              <td class="description">Update a pre-rendered map. In the update you must pass all the data to the map (<a href="demos/11-update-map.html">view example</a>)</td>
             </tr>
             <tr>
               <td class="property">destroy</td>
               <td class="default"><pre><code class="javascript">
   jQuery("#map").shakemap('destroy');
               </code></pre></td>
-              <td class="description">Destroy a pre-rendered map, remove map object and clear the map container (<a href="demo/12-destroy-map.html">view example</a>)</td>
+              <td class="description">Destroy a pre-rendered map, remove map object and clear the map container (<a href="demos/12-destroy-map.html">view example</a>)</td>
             </tr>
           </tbody>
         </table>
@@ -320,18 +320,18 @@
         <h3>Demo</h3>
         <p>View all detailed demo:</p>
         <ul>
-          <li><a href="demo/01-simple-map.html">Simple map</a></li>
-          <li><a href="demo/02-map-with-infobox.html">Map with Infobox</a></li>
-          <li><a href="demo/03-map-with-direct-click.html">Map with direct click on marker</a></li>
-          <li><a href="demo/04-map-with-no-click.html">Map with no click!</a></li>
-          <li><a href="demo/05-map-with-custom-map-options.html">Map with custom map options</a></li>
-          <li><a href="demo/06-custom-icons.html">Custom icons</a></li>
-          <li><a href="demo/07-map-with-spider.html">Map with OverlappingMarkerSpiderfier</a></li>
-          <li><a href="demo/08-map-with-sidebar.html">Map with sidebar</a></li>
-          <li><a href="demo/09-clusterer.html">Cluster options</a></li>
-          <li><a href="demo/10-map-with-custom-style.html">Map with custom style</a></li>
-          <li><a href="demo/11-update-map.html">Update a map</a></li>
-          <li><a href="demo/12-destroy-map.html">Destroy a map</a></li>
+          <li><a href="demos/01-simple-map.html">Simple map</a></li>
+          <li><a href="demos/02-map-with-infobox.html">Map with Infobox</a></li>
+          <li><a href="demos/03-map-with-direct-click.html">Map with direct click on marker</a></li>
+          <li><a href="demos/04-map-with-no-click.html">Map with no click!</a></li>
+          <li><a href="demos/05-map-with-custom-map-options.html">Map with custom map options</a></li>
+          <li><a href="demos/06-custom-icons.html">Custom icons</a></li>
+          <li><a href="demos/07-map-with-spider.html">Map with OverlappingMarkerSpiderfier</a></li>
+          <li><a href="demos/08-map-with-sidebar.html">Map with sidebar</a></li>
+          <li><a href="demos/09-clusterer.html">Cluster options</a></li>
+          <li><a href="demos/10-map-with-custom-style.html">Map with custom style</a></li>
+          <li><a href="demos/11-update-map.html">Update a map</a></li>
+          <li><a href="demos/12-destroy-map.html">Destroy a map</a></li>
         </ul>
       </section>
     </section>
