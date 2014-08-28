@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Documentation | Shakemap</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="../styles/reset.css" />
+  <link rel="stylesheet" href="../fonts/fonts.css" />
+  <link rel="stylesheet" href="../styles/style.css" />
+  <link rel="stylesheet" href="../styles/github.css" />
+  <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+</head>
+<body>
+<section id="wrapper">
+  <!--LOGO-->
+  <section id="logo" class="fullscreen">
+    <h1><span>.</span>shake<span>map</span></h1>
+    <h2>Documentation</h2>
+    <a href="#docs" id="go-down">Go down</a>
+  </section>
+  <!--FINE LOGO-->
+  <!--DOC PAGE-->
+  <section id="docs" class="doc-page">
+    <section id="doc-info">
+      <h2>Instructions &amp; Help</h2>
+      <nav>
+        <ul>
+          <li><a href="#usage">Usage</a></li>
+          <li><a href="#settings">Settings</a></li>
+          <li><a href="#methods">Methods</a></li>
+          <li><a href="#demos">Demos</a></li>
+        </ul>
+      </nav>
+      
+      <section id="usage">
+        <h3>Usage</h3>
+        <p>Shakemap accepts settings from an object of key/value pairs, and can be assigned to any HTML element.</p>
+        <pre><code>
+          //Format
+          jQuery(selector).shakemap({key:value, key:value, key:value});
+        </code></pre>
+        <pre><code>
+          //Simple map
+          jQuery("#map").shakemap({data:"path/to/my.json"});
+          
+          //Preload a data and display
+          jQuery.getJSON("path/to/my.json", function(loadedData){
+            jQuery("#map".shakemap({data:loadedData});
+          })
+        </code></pre>
+        <p>The data loaded must be formatted as <strong>geoJSON</strong>, a particular json used for sending and trasmitting information about location.</p>
+        <pre><code>
+          //geoJSON example
+          {
+            "type":"FeatureCollection",
+            "features":
+              [
+                {
+                  "type":"Feature",
+                  "geometry":{
+                    "type":"Point",
+                    "coordinates":[13.532209,45.804991]
+                  },
+                  "properties":{
+                    "name":"Monfalcone",
+                    "description":"Simple marker"
+                  }
+                }
+              ]
+            }
+        </code></pre>
+        <p>You can add personalized fields to the geoJSON. For example, if you wanto to assing a category (a custom icon) to the position you can add a field to properties...</p>
+        <pre><code>
+          {
+            "type":"FeatureCollection",
+            "features":
+              [
+                {
+                  "type":"Feature",
+                  "geometry":{
+                    "type":"Point",
+                    "coordinates":[13.532209,45.804991]
+                  },
+                  "properties":{
+                    "name":"Monfalcone",
+                    "description":"Simple marker",
+                    "icon":"test"
+                  }
+                }
+              ]
+            }
+        </code></pre>
+        <p>...and later using in shakemap.</p>
+        <pre><code>
+          jQuery("#map").shakemap({
+            data:"path/to/my.json",
+            categoryIcons:{
+              field_name:"icon",
+              options:{
+                'test':'images/test.png'
+              },
+              size:[64,64],
+              origin:[0,0],
+              anchor:[32,64]
+            }
+          });
+        </code></pre>
+        <p>Remember to set a defined dimension to the element that contain the map, otherwise the map is not visible!</p>
+      </section>
+      
+      <section id="settings">
+        <h3>Settings</h3>
+        <table>
+          <thead>
+            <tr>
+              <th class="property">Property</th>
+              <th class="default">Default</th>
+              <th class="description">Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="property">data</td>
+              <td class="default"><pre><code>""</code></pre></td>
+              <td class="description"><em>string or object</em>. The data used to generate a map. Must be a string (path to geoJSON) or a geoJSON object</td>
+            </tr>
+            <tr>
+              <td class="property">action</td>
+              <td class="default"><pre><code>"infowindow"</code></pre></td>
+              <td class="description"><em>string</em>. Action to take clicking in the marker. Other possible values: <em>infobox</em>, <em>direct</em>, <em>null</em></td>
+            </tr>
+            <tr>
+              <td class="property">markerClick</td>
+              <td class="default"><pre><code>function(marker){}</code></pre></td>
+              <td class="description"><em>function</em>. The function used when action is set to direct. The parameter <strong>marker</strong> cotains the marker object that clicking in this moment.</td>
+            </tr>
+            <tr>
+              <td class="property">autoOpen</td>
+              <td class="default"><pre><code>false</code></pre></td>
+              <td class="description"><em>boolean</em>. Open automatically a marker, ONLY if there is only one marker in the map</td>
+            </tr>
+            <tr>
+              <td class="property">spider</td>
+              <td class="default"><pre><code>false</code></pre></td>
+              <td class="description"><em>boolean</em>. Activate/disactivate the OverlappingMarkerSpiderfier functionality. Note: requaires the OverlappingMarkerSpiderfier library.</td>
+            </tr>
+            <tr>
+              <td class="property">sidebar</td>
+              <td class="default"><pre><code>
+  {
+    active:false,
+    mid:null,
+    target:""
+  }
+              </code></pre></td>
+              <td class="description">
+                <em>object</em>. Settings about using a sidebar with marker list.
+                <ul>
+                  <li><strong>active</strong> - <em>boolean</em>, Activate/disactivate sidebar functionality</li>
+                  <li><strong>mid</strong> - <em>string</em>, the name of the field containg reference marker (<a href="demos/08-map-with-sidebar.html">view example</a>)</li>
+                  <li><strong>target</strong> - <em>string</em>, the HTML sidebar</li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td class="property">defaultPoint</td>
+              <td class="default"><pre><code>
+  {
+    lat:0,
+    lng:0
+  }
+              </code></pre></td>
+              <td class="description">
+                <em>object</em>. Default position to load (using only to fallback if no marker is displayed).
+              </td>
+            </tr>
+            <tr>
+              <td class="property">clusterer</td>
+              <td class="default"><pre><code>
+  {
+    grid_size:50,
+    max_zoom:15,
+    style:[]
+  }
+              </code></pre></td>
+              <td class="description">
+                <em>object</em>. Settings about MarkerClusterer style.
+                <ul>
+                  <li><strong>grid_size</strong> - <em>int</em>, the size of the cluster grid</li>
+                  <li><strong>max_zoom</strong> - <em>int</em>, maximun zoom to apply cluster</li>
+                  <li><strong>style</strong> - <em>array</em>, the style of the cluster (<a href="demos/09-clusterer.html">view example</a>)</li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td class="property">categoryIcons</td>
+              <td class="default"><pre><code>
+  {
+    field_name:"",
+    options:{},
+    size:[32,32],
+    origin:[0,0],
+    anchor:[0,0]
+  }
+              </code></pre></td>
+              <td class="description">
+                <em>object</em>. Settings about Marker Icons.
+                <ul>
+                  <li><strong>field_name</strong> - <em>string</em>, the name of the field in the geoJSON</li>
+                  <li><strong>options</strong> - <em>object</em>, list of all cateogry/image icon (<a href="demos/06-custom-icons.html">view example</a>)</li>
+                  <li><strong>size</strong> - <em>array</em>, the size of the icon</li>
+                  <li><strong>origin</strong> - <em>array</em>, origin point of the icon</li>
+                  <li><strong>anchor</strong> - <em>array</em>, anchor point of the icon</li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td class="property">geolocation</td>
+              <td class="default"><pre><code>
+  {
+    active:false,
+    marker:"",
+    manualCoords:[],
+    onGeolocation:function(map, position, result){},
+    onError:function(error){}
+  }
+              </code></pre></td>
+              <td class="description">
+                <em>object</em>. Settings about Geolocation feature.
+                <ul>
+                  <li><strong>active</strong> - <em>boolean</em>, indicate if the geolocation is active</li>
+                  <li><strong>marker</strong> - <em>string</em>, url to the icon using for user position</li>
+                  <li><strong>manualCoords</strong> - <em>array</em>, manual coordinates that change the user position - rare case!</li>
+                  <li><strong>onGeolocation</strong> - <em>function</em>, fired after the geolocation success. The paramenter is:
+                    <ul>
+                      <li><strong>map</strong>: the map object</li>
+                      <li><strong>position</strong>: actual user position</li>
+                      <li><strong>result</strong>: ???</li>
+                    </ul>
+                  </li>
+                  <li><strong>onError</strong> - <em>function</em>, fired if the geolocation failed. The paramenter <strong>error</strong> contain the error object from geolocation</li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td class="property">infowindowOptions</td>
+              <td class="default"><pre><code>{}</code></pre></td>
+              <td class="description">
+                <em>object</em>. Options for Infowindow object (<a href="https://developers.google.com/maps/documentation/javascript/reference#InfoWindowOptions" target="_blank">view Gmap API</a>).
+              </td>
+            </tr>
+            <tr>
+              <td class="property">infoboxSettings</td>
+              <td class="default"><pre><code>
+  {
+    offset:[0,0],
+    width:"",
+    height:"",
+    background:"",
+    closeBoxMargin:"0 0 0 0",
+    closeBoxURL:""
+  }
+              </code></pre></td>
+              <td class="description">
+                <em>object</em>. Settings about Infobox style.
+                <ul>
+                  <li><strong>offset</strong> - <em>array</em>, offset of infobox</li>
+                  <li><strong>width</strong> - <em>string</em>, width od infobox in px</li>
+                  <li><strong>height</strong> - <em>string</em>, height of infobox in px</li>
+                  <li><strong>background</strong> - <em>string</em>, background url for infobox</li>
+                  <li><strong>closeBoxMargin</strong> - <em>string</em>, margin of close button, express like CSS margin property</li>
+                  <li><strong>closeBoxURL</strong> - <em>string</em>, url of image for close button</li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td class="property">mapOptions</td>
+              <td class="default"><pre><code>{}</code></pre></td>
+              <td class="description"><em>object</em>. Object containing the option for the map (<a href="https://developers.google.com/maps/documentation/javascript/reference#MapOptions" target="_blank">view Gmap API</a>) (<a href="demos/05-map-with-custom-map-options.html">view example</a>)</td>
+            </tr>
+            <tr>
+              <td class="property">mapStyle</td>
+              <td class="default"><pre><code>[]</code></pre></td>
+              <td class="description"><em>array</em>. Style array (<a href="https://developers.google.com/maps/documentation/javascript/styling" target="_blank">view Gmap API</a>) (<a href="http://gmaps-samples-v3.googlecode.com/svn/trunk/styledmaps/wizard/index.html" target="_blank">Styled Map Wizard</a>) (<a href="demos/10-map-with-custom-style.html">view example</a>)</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      
+      <section id="methods">
+        <h3>Methods</h3>
+        <table>
+          <thead>
+            <tr>
+              <th class="property">Method name</th>
+              <th class="default">Example</th>
+              <th class="description">Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="property">update</td>
+              <td class="default"><pre><code class="javascript">
+  jQuery("#map").shakemap('update', {
+    data:"path/to/my.json"
+  });
+                </code></pre></td>
+              <td class="description">Update a pre-rendered map. In the update you must pass all the data to the map (<a href="demos/11-update-map.html">view example</a>)</td>
+            </tr>
+            <tr>
+              <td class="property">destroy</td>
+              <td class="default"><pre><code class="javascript">
+  jQuery("#map").shakemap('destroy');
+              </code></pre></td>
+              <td class="description">Destroy a pre-rendered map, remove map object and clear the map container (<a href="demos/12-destroy-map.html">view example</a>)</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      <section id="demos">
+        <h3>Demo</h3>
+        <p>View all detailed demo:</p>
+        <ul>
+          <li><a href="demos/01-simple-map.html">Simple map</a></li>
+          <li><a href="demos/02-map-with-infobox.html">Map with Infobox</a></li>
+          <li><a href="demos/03-map-with-direct-click.html">Map with direct click on marker</a></li>
+          <li><a href="demos/04-map-with-no-click.html">Map with no click!</a></li>
+          <li><a href="demos/05-map-with-custom-map-options.html">Map with custom map options</a></li>
+          <li><a href="demos/06-custom-icons.html">Custom icons</a></li>
+          <li><a href="demos/07-map-with-spider.html">Map with OverlappingMarkerSpiderfier</a></li>
+          <li><a href="demos/08-map-with-sidebar.html">Map with sidebar</a></li>
+          <li><a href="demos/09-clusterer.html">Cluster options</a></li>
+          <li><a href="demos/10-map-with-custom-style.html">Map with custom style</a></li>
+          <li><a href="demos/11-update-map.html">Update a map</a></li>
+          <li><a href="demos/12-destroy-map.html">Destroy a map</a></li>
+        </ul>
+      </section>
+    </section>
+  </section>
+  <!--FINE DOCS-->
+</section>
+<script src="../js/jquery-1.7.2.min.js"></script>
+<script src="../js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script src="../js/docs.js"></script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-3538311-19', 'giovannibuffa.it');
+  ga('send', 'pageview');
+
+</script>
+</body>
+</html>

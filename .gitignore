@@ -8,3 +8,5 @@ lib
 *.jar
 *.war
 *.ear
+
+*.codekit

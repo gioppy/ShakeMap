@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Shakemap | Data manager for Google Maps</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta property="og:url" content="http://shakemap.giovannibuffa.it/" />
+  <meta property="og:site_name" content="Shakemap" />
+  <meta name="description" content="Manage and display thousand of marker with Shakemap plugin, a jQuery library for Google Maps." />
+  <meta property="og:title" content="Shakemap | Data manager for Google Maps" />
+  <meta property="og:type" content="article" />
+  <link rel="canonical" href="http://shakemap.giovannibuffa.it/" />
+  <link rel="shortlink" href="http://shakemap.giovannibuffa.it/" />
+  <link rel="image_src" href="http://shakemap.giovannibuffa.it/images/shakemap_logo.jpg" />
+  <meta property="og:image" content="http://shakemap.giovannibuffa.it/images/shakemap_logo.jpg" />
+  <link rel="stylesheet" href="styles/reset.css" />
+  <link rel="stylesheet" href="fonts/fonts.css" />
+  <link rel="stylesheet" href="styles/style.css" />
+  <link rel="stylesheet" href="styles/skeleton.css" />
+  <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+</head>
+<body>
+<section id="wrapper">
+  <!--LOGO-->
+  <section id="logo" class="fullscreen">
+    <h1><span>.</span>shake<span>map</span></h1>
+    <a href="#info" id="go-down">Go down</a>
+  </section>
+  <!--FINE LOGO-->
+  <!--INFO-->
+  <section id="info" class="fullscreen">
+    <section id="info-slideshow">
+      <header>
+        <h2>Informations</h2>
+      </header>
+      <section id="slides">
+        <article>
+          <p>ShakeMap is a jQuery <strong>data-manager</strong> plugin using with Google Maps.</p>
+          <p>It's designed for manage and elaborate <strong>thousand</strong> of places in a single map.</p>
+          <p>It's based on <a href="http://vigetlabs.github.io/jmapping/" target="_blank">jmapping</a> plugin created by <strong>Brian Landau</strong> of Viget Labs.</p>
+        </article>
+        <article>
+          <p>Shakemap is builded around a powerfull plugin for clustering, <strong>Marker Clusterer</strong>.</p>
+          <p>You can easily manage and display a very large amount of markers in a single map, drastically increase the performace of the page.</p>
+        </article>
+        <article>
+          <p>Working, also, with <strong>Overlapping Marker Spiderfier</strong>, a simple yet elegant way to show more marker on the same place.</p>
+          <p>You can, even, customize the appearance of the info window through <strong>Infobox</strong> plugin.</p>
+        </article>
+        <article>
+          <p>Finally, you can use the powerfull of <strong>HTML5</strong> and the <strong>Geolocation</strong>.</p>
+          <p>If the browser support geolocation feature, you can show the position of the user in the map and realaborate the data as you wish!</p>
+        </article>
+      </section>
+    </section>
+    <div class="slides-controls">
+      <a href="#prev" id="prev">&lsaquo;</a>
+      <a href="#next" id="next">&rsaquo;</a>
+    </div>
+  </section>
+  <!--FINE INFO-->
+  <!--DEMO-->
+  <section id="demo" class="fullscreen">
+    <section id="demo-content">
+      <header>
+        <h2>Demo - <span class="token">Simple Map</span></h2>
+      </header>
+      <article class="map-demo">
+        <div id="single-map" class="map"></div>
+        <div id="map-1" class="map"></div>
+        <div id="map-2" class="map"></div>
+        <div id="map-with-sidebar" class="map"></div>
+        <div id="sidebar"></div>
+      </article>
+      <footer>
+        <ul>
+          <li class="first active"><a class="demo-01" href="#simple-map" data-json="simple">Simple Map</a></li>
+          <li><a class="demo-02" href="#clustering" data-json="clustering">Clustering</a></li>
+          <li><a class="demo-03" href="#spider" data-json="spider">Spider</a></li>
+          <li><a class="demo-04" href="#infobox" data-json="infobox">Infobox</a></li>
+          <li><a class="demo-05" href="#multiple-maps" data-json="multiple">Multiple Maps</a></li>
+          <li><a class="demo-06" href="#sidebar" data-json="sidebar">Sidebar</a></li>
+          <li><a class="demo-07" href="#external-links" data-json="external">External Links</a></li>
+          <li><a class="demo-08" href="#custom-icons" data-json="icons">Custom Icons</a></li>
+          <li><a class="demo-09" href="#geolocation" data-json="geolocation">Geolocation</a></li>
+          <li class="last"><a class="demo-10" href="#styled-map" data-json="style">Styled Map</a></li>
+        </ul>
+        <span class="clear"></span>
+      </footer>
+    </section>
+  </section>
+  <!--FINE DEMO-->
+  <!--DOWNLOAD-->
+  <section id="download" class="fullscreen">
+    <section id="download-content">
+      <div class="column-1">
+        <div class="requirements">
+          <h3>Requirements</h3>
+          <ul>
+            <li>jQuery 1.4.X + | <a href="http://jquery.com/" target="_blank">Website</a> - <a href="http://jquery.com/download/" target="_blank">Download</a></li>
+            <li>MarkerClusterer | <a href="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/src/markerclusterer_compiled.js" target="_blank">Download</a></li>
+          </ul>
+        </div>
+        <div class="optionals">
+          <h3>Optionals</h3>
+          <ul>
+            <li>OverlappingMarkerSpiderfier | <a href="https://github.com/jawj/OverlappingMarkerSpiderfier" target="_blank">GitHub</a> - <a href="https://github.com/jawj/OverlappingMarkerSpiderfier/archive/master.zip" target="_blank">Download</a></li>
+            <li>Infobox | <a href="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/infobox/src/infobox_packed.js" target="_blank">Download</a></li>
+          </ul>
+        </div>
+        <div class="working">
+          <h3>Working on</h3>
+          <ul>
+            <li>Internet Explorer 8.x +</li>
+            <li>Mozilla FireFox</li>
+            <li>Apple Safari</li>
+            <li>Google Chrome</li>
+            <li>Opera</li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="column-2">
+        <h2>Shakemap latest version</h2>
+        <p>Download the latest version of Shakemap plugin.</p>
+        <a href="https://github.com/gioppy/ShakeMap/archive/3.0.zip" class="download">download now</a>
+        <a href="docs/" class="docs">read documentation</a>
+        <p>Find a bug or suggest e feature? <a href="https://github.com/gioppy/ShakeMap/issues" target="_blank">Open an issue on GitHub!</a></p>
+        <div class="share">
+          <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+            <p class="divider">SHARE</p>
+            <a class="addthis_button_facebook"><img src="images/fb_icon.gif" alt="" /></a>
+            <a class="addthis_button_twitter"><img src="images/tw_icon.gif" alt="" /></a>
+            <a class="addthis_button_email"><img src="images/mail_icon.gif" alt="" /></a>
+            <a class="addthis_button_linkedin"><img src="images/linkedin_icon.gif" alt="" /></a>
+            <a class="addthis_button_stumbleupon"><img src="images/stumble_icon.gif" alt="" /></a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </section>
+  <!--FINE DOWNLOAD-->
+</section>
+<script type="text/javascript">var addthis_config = {"data_track_addressbar":true};</script>
+<script type="text/javascript" src="http://s7.addthis.com/js/300/addthis_widget.js#pubid=ra-51dec7075af93093"></script>
+<script src="js/jquery-1.7.2.min.js"></script>
+<script src="js/jquery.scrollTo-1.4.3.1-min.js"></script>
+<script src="js/jquery.cycle2.min.js"></script>
+<script src="js/markerclusterer.js"></script>
+<script src="js/infobox.js"></script>
+<script src="js/oms.min.js"></script>
+<script src="js/jquery.shakeMap.js"></script>
+<script src="js/common.js"></script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-3538311-19', 'giovannibuffa.it');
+  ga('send', 'pageview');
+
+</script>
+</body>
+</html>
