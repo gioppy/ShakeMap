@@ -271,6 +271,23 @@ jQuery.skmap = {
         });
       }
       
+      //draggable events
+      if(totalMarker == 1 && settings.draggable.active === true){
+        settings.action = null;
+        var marker = $.skmap.markers[api.getMap(target)][0];
+        marker.setDraggable(true);
+        google.maps.event.addListener(marker, 'dragstart', function(){
+          settings.draggable.dragstart(this.getPosition());
+        });
+        google.maps.event.addListener(marker, 'drag', function(){
+          settings.draggable.drag(this.getPosition());
+        });
+        google.maps.event.addListener(marker, 'dragend', function(){
+          settings.draggable.dragend(this.getPosition());
+        });
+      }
+      
+      //geolocation event
       if(settings.geolocation.active === true){
         google.maps.event.addListenerOnce($.skmap.mapHash[api.getMap(target)].map, 'idle', function(){
           if(navigator.geolocation){
@@ -315,7 +332,7 @@ jQuery.skmap = {
           setup.set(target, update);
         }
       }else{
-        console.log('Please, insert a valide geoJSON url or passing a geoJSON Object!');
+        console.log('Please, insert a valid geoJSON url or passing a geoJSON Object!');
       }
     }
   },
@@ -398,6 +415,12 @@ jQuery.skmap = {
           manualCoords:[],
           onGeolocation:function(map, position, result){},
           onError:function(error){}
+        },
+        draggable:{
+          active:false,
+          dragstart:function(position){},
+          drag:function(position){},
+          dragend:function(position){}
         },
         infowindowOptions:{},
         infoboxSettings:{
