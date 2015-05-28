@@ -541,10 +541,16 @@ color:#DD1144;
 padding:0 0 0 18px;
 }
 
+#doc-info ul,
 #demos ul{
 padding:0 0 0 18px;
 }
 
+#doc-info li,
 #demos li{
 line-height:1.5em;
+}
+
+#doc-info li{
+font-size:1.2em;
 }
